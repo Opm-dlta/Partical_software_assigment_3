@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-// this is a test for the functionm
+// this is a test for the functionmz
 public class LoginPanel extends JPanel {
 
     public LoginPanel(StaffManager staffManager, MovieManager movieManager, JFrame frame) {
