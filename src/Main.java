@@ -1,6 +1,6 @@
 // Main.java
 public class Main {
-// not sure what to do yet
+// not sure what to do yetk
     public static void main(String[] args) {
 
         // 1. Load movie data
