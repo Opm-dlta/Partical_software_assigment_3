@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-
+// this is a test for the function
 public class LoginPanel extends JPanel {
 
     public LoginPanel(StaffManager staffManager, MovieManager movieManager, JFrame frame) {
