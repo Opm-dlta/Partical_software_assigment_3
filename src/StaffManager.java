@@ -3,7 +3,7 @@
 // verifies username/password, and returns the correct
 // Staff object so the GUI knows which features to enable.
 // It does NOT manage movies or change staff accounts.
-
+//
 import java.util.ArrayList;
 import java.util.List;
 

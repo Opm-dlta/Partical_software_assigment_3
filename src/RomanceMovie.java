@@ -1,4 +1,4 @@
-public class RomanceMovie extends Movie {
+public class  RomanceMovie extends Movie {
     public String loveTheme;
 
     public RomanceMovie(String movieID, String title, String director, int duration,

@@ -1,4 +1,4 @@
-//The Movie superclass is the parent class that defines all the common attributes and behaviors shared by every movie category.
+//The Movie superclass   is the parent class that defines all the common attributes and behaviors shared by every movie category.
 public abstract class Movie {
     public String movieID;
     public String title;

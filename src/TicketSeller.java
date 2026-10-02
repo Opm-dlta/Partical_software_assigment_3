@@ -9,7 +9,7 @@
 //
 //Sell tickets
 //
-//Reduce available ticket count
+//Reduce available  ticket count
 //
 //View movie details (title, director, duration, price, showtime, extra attribute)
 //
@@ -40,7 +40,7 @@
 //
 //Manage staff accounts
 //
-//Change passwords
+//Change password
 //
 //Create new roles
 //

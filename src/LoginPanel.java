@@ -1,6 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-
+//login still need ui
 public class LoginPanel extends JPanel {
 
     public LoginPanel(StaffManager staffManager, MovieManager movieManager, JFrame frame) {

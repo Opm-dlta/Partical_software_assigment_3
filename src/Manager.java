@@ -13,7 +13,7 @@
 //
 //Export movie data to a file
 //
-//Access the ManagePanel (special manager-only GUI tab)
+//Access the ManagePanel (special manager-only GUI tab) will be add
 
 //Manager CANNOT
 //Add staff

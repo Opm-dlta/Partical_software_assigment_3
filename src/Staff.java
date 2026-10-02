@@ -1,4 +1,5 @@
 //superclass for organisting and match username and pass for childclass manger and sell
+
 public abstract class Staff {
     protected String username;
     protected String password;
