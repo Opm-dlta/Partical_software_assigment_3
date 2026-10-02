@@ -1,4 +1,3 @@
-<img width="639" height="1238" alt="image" src="https://github.com/user-attachments/assets/73640a9b-98b3-4ed3-aa0e-734f1cc0740b" /># Partical_software_assigment-2-
 assismnget 2 movie tciket website  
 ---
 
