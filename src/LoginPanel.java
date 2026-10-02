@@ -1,39 +1,31 @@
 import javax.swing.*;
 import java.awt.*;
-// this is a test for the functionmz
+
 public class LoginPanel extends JPanel {
 
     public LoginPanel(StaffManager staffManager, MovieManager movieManager, JFrame frame) {
-
         setLayout(new GridLayout(3, 2));
 
-        JLabel userLabel = new JLabel("Username:");
         JTextField userField = new JTextField();
-
-        JLabel passLabel = new JLabel("Password:");
         JPasswordField passField = new JPasswordField();
-
         JButton loginBtn = new JButton("Login");
 
         loginBtn.addActionListener(e -> {
-            String u = userField.getText();
-            String p = new String(passField.getPassword());
-
-            Staff staff = staffManager.login(u, p);
+            Staff staff = staffManager.login(
+                    userField.getText(),
+                    new String(passField.getPassword())
+            );
 
             if (staff != null) {
-                JOptionPane.showMessageDialog(this,
-                        "Login successful as: " + staff.getRole());
-
+                JOptionPane.showMessageDialog(this, "Logged in as: " + staff.getRole());
             } else {
-                JOptionPane.showMessageDialog(this,
-                        "Invalid username or password");
+                JOptionPane.showMessageDialog(this, "Invalid login");
             }
         });
 
-        add(userLabel);
+        add(new JLabel("Username:"));
         add(userField);
-        add(passLabel);
+        add(new JLabel("Password:"));
         add(passField);
         add(loginBtn);
     }

@@ -1,20 +1,17 @@
-// Main.java
-public class Main {
-//try thius
-    public static void main(String[] args) {
+import javax.swing.*;
 
-        // 1. Load movie data
-        MovieManager movieManager = new MovieManager();
-        movieManager.loadFromFile("movies.txt");
+public class MainGUI extends JFrame {
+    public MainGUI(MovieManager movieManager, StaffManager staffManager) {
+        setTitle("Cinema Ticket System");
+        setSize(900, 600);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        // 2. Load staff accounts
-        StaffManager staffManager = new StaffManager();
-        staffManager.loadDefaultStaff();
+        JTabbedPane tabs = new JTabbedPane();
 
-        // 3. Start GUI
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            MainGUI gui = new MainGUI(movieManager, staffManager);
-            gui.setVisible(true);
-        });
+        tabs.add("Login", new LoginPanel(staffManager, movieManager, this));
+        tabs.add("Browse", new BrowsePanel(movieManager));
+        tabs.add("Manage", new ManagePanel(movieManager));
+
+        add(tabs);
     }
 }
