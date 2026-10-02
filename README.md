@@ -1,4 +1,4 @@
-# Partical_software_assigment-2-
+<img width="639" height="1238" alt="image" src="https://github.com/user-attachments/assets/73640a9b-98b3-4ed3-aa0e-734f1cc0740b" /># Partical_software_assigment-2-
 assismnget 2 movie tciket website  
 ---
 
@@ -163,21 +163,63 @@ reports/metrics/
 
 # 📂 **Project Structure**
 ```
-src/
- ├── main/java/
- │    ├── Movie classes
- │    ├── Staff classes
- │    ├── MovieManager
- │    ├── StaffManager
- │    ├── GUI panels
- │    └── Main.java
- ├── test/java/
- │    └── JUnit tests
-reports/
- └── metrics/
-movies.txt
-InstructionManual.pdf
-README.md
+project-root/
+│
+├── src/
+│   └── main/
+│       └── java/
+│           ├── movie/
+│           │   ├── Movie.java
+│           │   ├── ActionMovie.java
+│           │   ├── ComedyMovie.java
+│           │   ├── RomanceMovie.java
+│           │   └── SciFiMovie.java
+│           │
+│           ├── staff/
+│           │   ├── Staff.java
+│           │   ├── TicketSeller.java
+│           │   └── Manager.java
+│           │
+│           ├── manager/
+│           │   ├── MovieManager.java
+│           │   └── StaffManager.java
+│           │
+│           ├── ui/
+│           │   ├── LoginPanel.java
+│           │   ├── BrowsePanel.java
+│           │   ├── ManagePanel.java
+│           │   └── MainGUI.java
+│           │
+│           └── Main.java
+│
+├── src/
+│   └── test/
+│       └── java/
+│           ├── MovieTests.java
+│           ├── StaffTests.java
+│           └── ManagerTests.java
+│
+├── resources/
+│   └── movies.txt
+│
+├── reports/
+│   ├── FunctionalTesting.pdf
+│   ├── UsabilityTesting.pdf
+│   └── SecurityTesting.pdf
+│
+├── metrics/
+│   ├── CKMetrics.txt
+│   └── SonarLint.txt
+│
+├── docs/
+│   ├── InstructionManual.pdf
+│   └── UML/
+│       ├── ClassDiagram.png
+│       ├── UseCaseDiagram.png
+│       └── SequenceDiagram.png
+│
+└── README.md
+
 ```
 
 ---
