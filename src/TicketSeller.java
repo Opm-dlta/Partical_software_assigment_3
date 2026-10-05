@@ -47,12 +47,61 @@
 //Access manager-only features
 public class TicketSeller extends Staff {
 
-    public TicketSeller(String username, String password) {
+    private MovieManager movieManager;
+
+    public TicketSeller(String username, String password, MovieManager movieManager) {
         super(username, password);
+        this.movieManager = movieManager;
     }
 
     @Override
     public String getRole() {
         return "Seller";
+    }
+
+    /**
+     * Seller can view all movies.
+     */
+    public Movie[] viewAllMovies() {
+        return movieManager.getAllMovies();
+    }
+
+    /**
+     * Seller can search movies by keyword.
+     */
+    public Movie[] searchMovies(String keyword) {
+        return movieManager.searchMovies(keyword);
+    }
+
+    /**
+     * Seller can view detailed movie information.
+     */
+    public Movie viewMovieDetails(String movieId) {
+        return movieManager.getMovieById(movieId);
+    }
+
+    /**
+     * Seller can sell a ticket.
+     * This reduces the available ticket count by 1.
+     * UI will handle all messages and errors.
+     */
+    public boolean sellTicket(String movieId) {
+        Movie movie = movieManager.getMovieById(movieId);
+
+        if (movie == null) {
+            return false; // movie not found
+        }
+
+        if (movie.getAvailableTickets() <= 0) {
+            return false; // no tickets left
+        }
+
+        // Allowed: reduce ticket count through selling
+        movie.reduceTicketCount();
+
+        // Save updated movie list to file (indirect export)
+        movieManager.saveMovies();
+
+        return true;
     }
 }

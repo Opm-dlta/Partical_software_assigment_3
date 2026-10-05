@@ -1,3 +1,5 @@
+import movie.Movie;
+
 public class ComedyMovie extends Movie {
     public String comedian;
 //comedy here

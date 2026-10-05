@@ -1,32 +1,47 @@
 import javax.swing.*;
 import java.awt.*;
-//login still need ui
+
 public class LoginPanel extends JPanel {
 
-    public LoginPanel(StaffManager staffManager, MovieManager movieManager, JFrame frame) {
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JButton loginButton;
+
+    private StaffManager staffManager;
+    private MovieManager movieManager;
+
+    public LoginPanel(StaffManager staffManager, MovieManager movieManager) {
+        this.staffManager = staffManager;
+        this.movieManager = movieManager;
+
         setLayout(new GridLayout(3, 2));
 
-        JTextField userField = new JTextField();
-        JPasswordField passField = new JPasswordField();
-        JButton loginBtn = new JButton("Login");
-
-        loginBtn.addActionListener(e -> {
-            Staff staff = staffManager.login(
-                    userField.getText(),
-                    new String(passField.getPassword())
-            );
-
-            if (staff != null) {
-                JOptionPane.showMessageDialog(this, "Logged in as: " + staff.getRole());
-            } else {
-                JOptionPane.showMessageDialog(this, "Invalid login");
-            }
-        });
-
         add(new JLabel("Username:"));
-        add(userField);
+        usernameField = new JTextField();
+        add(usernameField);
+
         add(new JLabel("Password:"));
-        add(passField);
-        add(loginBtn);
+        passwordField = new JPasswordField();
+        add(passwordField);
+
+        loginButton = new JButton("Login");
+        add(loginButton);
+
+        loginButton.addActionListener(e -> handleLogin());
+    }
+
+    private void handleLogin() {
+        String u = usernameField.getText();
+        String p = new String(passwordField.getPassword());
+
+        Staff staff = staffManager.login(u, p);
+
+        if (staff != null) {
+            JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            frame.setContentPane(new MainGUI(staff, movieManager));
+            frame.revalidate();
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid login");
+        }
     }
 }
