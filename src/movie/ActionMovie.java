@@ -1,4 +1,4 @@
-import movie.Movie;
+package movie;
 
 /**
  * ActionMovie represents an action‑genre movie in the Cinema System.

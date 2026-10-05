@@ -1,6 +1,29 @@
+package ui;
+
 import javax.swing.*;
 import java.awt.*;
+import staff.TicketSeller;
+import movie.Movie;
 
+/**
+ * ============================================================
+ * BrowsePanel
+ * ------------------------------------------------------------
+ * PURPOSE:
+ *   Seller's movie browsing + ticket selling interface.
+ *
+ * PACKAGE:
+ *   src/main/java/ui/
+ *
+ * FEATURES:
+ *   - Search movies
+ *   - View all movies
+ *   - Sell tickets
+ *
+ * DEPENDENCIES:
+ *   - TicketSeller (backend operations)
+ * ============================================================
+ */
 public class BrowsePanel extends JPanel {
 
     private TicketSeller seller;
@@ -12,7 +35,7 @@ public class BrowsePanel extends JPanel {
 
         setLayout(new BorderLayout());
 
-        // Top search bar
+        // ===== Top search bar =====
         JPanel top = new JPanel();
         searchField = new JTextField(20);
         JButton searchButton = new JButton("Search");
@@ -21,15 +44,16 @@ public class BrowsePanel extends JPanel {
         top.add(searchButton);
         add(top, BorderLayout.NORTH);
 
-        // Table of movies
+        // ===== Movie table =====
         table = new JTable();
         refreshTable(seller.viewAllMovies());
         add(new JScrollPane(table), BorderLayout.CENTER);
 
-        // Sell ticket button
+        // ===== Sell button =====
         JButton sellButton = new JButton("Sell Ticket");
         add(sellButton, BorderLayout.SOUTH);
 
+        // ===== Event handlers =====
         searchButton.addActionListener(e -> {
             String keyword = searchField.getText();
             refreshTable(seller.searchMovies(keyword));
@@ -38,6 +62,9 @@ public class BrowsePanel extends JPanel {
         sellButton.addActionListener(e -> handleSell());
     }
 
+    /**
+     * Refresh table with given movie list.
+     */
     private void refreshTable(Movie[] movies) {
         String[] columns = {"ID", "Title", "Director", "Showtime", "Tickets"};
         String[][] data = new String[movies.length][5];
@@ -53,6 +80,9 @@ public class BrowsePanel extends JPanel {
         table.setModel(new javax.swing.table.DefaultTableModel(data, columns));
     }
 
+    /**
+     * Sell ticket for selected movie.
+     */
     private void handleSell() {
         int row = table.getSelectedRow();
         if (row == -1) {

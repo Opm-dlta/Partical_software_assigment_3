@@ -1,30 +1,42 @@
-//The Movie superclass   is the parent class that defines all the common attributes and behaviors shared by every movie category.
 package movie;
 
 /**
- * Movie is the base class for all movie types in the Cinema System.
+ * Movie is the abstract base class for all movie types in the Cinema System.
  *
- * It stores all common attributes shared by Action, Comedy, Romance,
- * and ScienceFiction movies. Subclasses add their own extra attributes.
+ * It stores the common attributes shared by all movies:
+ * - ID
+ * - Title
+ * - Director
+ * - Duration
+ * - Price
+ * - Showtime
+ * - Available tickets
  *
- * This class is used by:
- * - MovieManager (loading, saving, searching)
- * - TicketSeller (viewing details, selling tickets)
- * - Manager (adding, updating, deleting movies)
- * - UI panels (displaying movie information)
+ * Subclasses (ActionMovie, ComedyMovie, RomanceMovie, SciFiMovie)
+ * must implement:
+ * - getExtraAttribute()   → returns the genre-specific detail
+ * - toFileString()        → returns a formatted line for movies.txt
  */
 public abstract class Movie {
 
     protected String id;
     protected String title;
     protected String director;
-    protected int duration;          // in minutes
-    protected double price;          // ticket price
-    protected String showtime;       // e.g., "18:30"
-    protected int availableTickets;  // starts at 50
+    protected int duration;
+    protected double price;
+    protected String showtime;
+    protected int availableTickets;
 
     /**
-     * Constructor for a movie with common attributes.
+     * Creates a Movie object with shared attributes.
+     *
+     * @param id               Unique movie ID (e.g., "A001")
+     * @param title            Movie title
+     * @param director         Movie director
+     * @param duration         Duration in minutes
+     * @param price            Ticket price
+     * @param showtime         Showtime (e.g., "18:30")
+     * @param availableTickets Number of tickets available
      */
     public Movie(String id, String title, String director, int duration,
                  double price, String showtime, int availableTickets) {
@@ -39,7 +51,7 @@ public abstract class Movie {
     }
 
     // -----------------------------
-    // Getters
+    // Getters for shared attributes
     // -----------------------------
 
     public String getId() {
@@ -70,46 +82,35 @@ public abstract class Movie {
         return availableTickets;
     }
 
-    // -----------------------------
-    // Seller-only action
-    // -----------------------------
-
     /**
-     * Reduces available ticket count by 1.
-     * Only called by TicketSeller.sellTicket().
+     * Reduces available tickets by 1 when a ticket is sold.
+     * Returns true if successful, false if no tickets remain.
      */
-    public void reduceTicketCount() {
+    public boolean sellTicket() {
         if (availableTickets > 0) {
             availableTickets--;
+            return true;
         }
+        return false;
     }
 
-    // -----------------------------
-    // File saving support
-    // -----------------------------
+    // ---------------------------------------------------------
+    // Abstract methods that subclasses MUST implement
+    // ---------------------------------------------------------
 
     /**
-     * Converts the movie into a line format for movies.txt.
-     * Subclasses override this to include their extra attribute.
+     * Returns the extra attribute specific to the movie genre.
+     * Example:
+     * - ActionMovie → stunt coordinator
+     * - ComedyMovie → humor style
+     * - RomanceMovie → rating
+     * - SciFiMovie → format
+     */
+    public abstract String getExtraAttribute();
+
+    /**
+     * Converts the movie into a formatted line for saving into movies.txt.
+     * Subclasses must include their genre name and extra attribute.
      */
     public abstract String toFileString();
-
-    // -----------------------------
-    // Display support
-    // -----------------------------
-
-    /**
-     * Returns a readable description of the movie.
-     * UI uses this for displaying movie details.
-     */
-    @Override
-    public String toString() {
-        return "ID: " + id +
-                "\nTitle: " + title +
-                "\nDirector: " + director +
-                "\nDuration: " + duration + " mins" +
-                "\nPrice: $" + price +
-                "\nShowtime: " + showtime +
-                "\nAvailable Tickets: " + availableTickets;
-    }
 }

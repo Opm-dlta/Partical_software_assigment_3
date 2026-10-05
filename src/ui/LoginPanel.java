@@ -1,6 +1,32 @@
+package ui;
+
 import javax.swing.*;
 import java.awt.*;
+import manager.StaffManager;
+import manager.MovieManager;
+import staff.Staff;
 
+/**
+ * ============================================================
+ * LoginPanel
+ * ------------------------------------------------------------
+ * PURPOSE:
+ *   First screen of the application.
+ *   Allows user to enter username + password.
+ *
+ * PACKAGE:
+ *   src/main/java/ui/
+ *
+ * DEPENDENCIES:
+ *   - StaffManager (authentication)
+ *   - MovieManager (passed to MainGUI)
+ *
+ * FLOW:
+ *   1. User enters credentials
+ *   2. StaffManager.login() checks them
+ *   3. If valid → switch to MainGUI
+ * ============================================================
+ */
 public class LoginPanel extends JPanel {
 
     private JTextField usernameField;
@@ -30,6 +56,9 @@ public class LoginPanel extends JPanel {
         loginButton.addActionListener(e -> handleLogin());
     }
 
+    /**
+     * Attempt login and switch to MainGUI if successful.
+     */
     private void handleLogin() {
         String u = usernameField.getText();
         String p = new String(passwordField.getPassword());
