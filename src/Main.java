@@ -1,5 +1,5 @@
 import javax.swing.*;
-// to run eveyrthinbg
+// to run everything
 public class MainGUI extends JFrame {
     public MainGUI(MovieManager movieManager, StaffManager staffManager) {
         setTitle("Cinema Ticket System");
