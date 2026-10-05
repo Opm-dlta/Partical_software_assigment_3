@@ -16,3 +16,16 @@ The src folder contains all core classes for the Cinema Management System:
 - Main.java: Program entry point that launches the main GUI.
  pls add copmment of change here 
 
+Ang update in test1 check out 
+
+ I reorganized the whole project into a clean multi‑package structure. All movie classes now live in the movie package, staff roles are in staff, backend logic is in manager, and all the UI screens are in ui. This makes the project much easier for me and my teammates to understand and work with.
+
+I also expanded the movie system by creating a full set of genre‑specific classes like ComedyMovie, RomanceMovie, and SciFiMovie. Each one has its own extra details, and they all save and load properly from the movie data file.
+
+On the staff side, I added a proper login system and separated the roles into seller and manager. Sellers can view movies, search them, and sell tickets. When a ticket is sold, the available ticket count updates and gets saved automatically. Managers get their own screen with options to add, update, and delete movies.
+
+The UI is now fully connected to the backend. The login screen checks credentials, the seller screen shows real movie data and allows ticket selling, and the manager screen displays all movies and prepares for future management features.
+
+Movie data handling has also been improved. The MovieManager now loads movies consistently, supports searching, and saves updates correctly. It’s also ready for future add/update/delete operations once we implement them.
+
+One limitation to mention: the manager screen shows buttons for adding, updating, and deleting movies, but those features aren’t implemented yet. The interface is ready — the logic just needs to be added later.
