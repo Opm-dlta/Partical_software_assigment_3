@@ -1,4 +1,4 @@
-(remove latter) i just add the base coed for mostly everything that is need 
+Ang (remove latter) i just add the base coed for mostly everything that is need 
 The src folder contains all core classes for the Cinema Management System:
 
 - Movie.java: Base class for all movie types.
@@ -15,3 +15,4 @@ The src folder contains all core classes for the Cinema Management System:
 - LoginPanel.java: UI panel for user login and role selection.
 - Main.java: Program entry point that launches the main GUI.
  pls add copmment of change here 
+
