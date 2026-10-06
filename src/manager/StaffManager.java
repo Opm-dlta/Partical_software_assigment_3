@@ -47,7 +47,7 @@ public class StaffManager {
      */
     private void loadDefaultStaff() {
         staffList.add(new TicketSeller("seller", "123", movieManager));
-        staffList.add(new Manager("manager", "123", movieManager));
+        staffList.add(new Manager("manager", "1234", movieManager));
     }
 
     /**
