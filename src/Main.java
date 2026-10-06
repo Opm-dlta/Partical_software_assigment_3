@@ -5,7 +5,7 @@ import manager.MovieManager;
 import manager.StaffManager;
 import ui.LoginPanel;
 
-// test push 111111
+// test push 1111111
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {

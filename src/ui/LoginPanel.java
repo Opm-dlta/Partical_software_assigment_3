@@ -9,7 +9,7 @@ import manager.StaffManager;
 import staff.Staff;
 
 //login still need ui
-//test pus
+//test push
 //by johnson, LoginPanel is for displaying UI and inputting the password.
 
 public class LoginPanel extends JPanel {
