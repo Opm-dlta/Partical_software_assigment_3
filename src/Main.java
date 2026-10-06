@@ -4,7 +4,6 @@ import manager.StaffManager;
 import ui.LoginPanel;
 
 /**
- * ============================================================
  * Main (APPLICATION ENTRY POINT)
  * ------------------------------------------------------------
  * This class launches the entire cinema system.
@@ -20,7 +19,6 @@ import ui.LoginPanel;
  *   - Create StaffManager (creates seller/manager accounts)
  *   - Create main JFrame window
  *   - Display LoginPanel as the first screen
- * ============================================================
  */
 public class Main {
 

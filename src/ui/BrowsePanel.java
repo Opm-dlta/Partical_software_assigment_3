@@ -1,5 +1,5 @@
 package ui;
-
+// put all ui and background here
 import javax.swing.*;
 import java.awt.*;
 import staff.TicketSeller;

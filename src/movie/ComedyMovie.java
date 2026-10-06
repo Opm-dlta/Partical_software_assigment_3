@@ -9,7 +9,7 @@ package movie;
  */
 public class ComedyMovie extends Movie {
 
-    private String comedian;
+    private final String comedian;
 
     public ComedyMovie(String movieID, String title, String director, int duration,
                        double price, String showTime, String comedian,

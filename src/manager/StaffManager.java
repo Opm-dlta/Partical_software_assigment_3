@@ -29,9 +29,7 @@ public class StaffManager {
 
     /**
      * Constructor
-     * --------------------------------------------------------
      * @param movieManager Shared MovieManager instance
-     *
      * StaffManager must receive MovieManager so it can pass it
      * to TicketSeller and Manager.
      */
@@ -45,6 +43,7 @@ public class StaffManager {
      * --------------------------------------------------------
      * README must match these accounts.
      */
+    //login info of mangers and seller
     private void loadDefaultStaff() {
         staffList.add(new TicketSeller("seller", "123", movieManager));
         staffList.add(new Manager("manager", "1234", movieManager));

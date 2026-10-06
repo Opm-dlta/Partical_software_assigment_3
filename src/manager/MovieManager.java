@@ -31,8 +31,7 @@ public class MovieManager {
     private List<Movie> movies = new ArrayList<>();
 
     // Path to movies.txt (relative to project root)
-    private static final String FILE_PATH = "resources/movies.txt";
-
+    private static final String FILE_PATH = "movies.txt";
     /**
      * Constructor
      * --------------------------------------------------------
@@ -58,6 +57,31 @@ public class MovieManager {
             if (m.getId().equals(id)) return m;
         }
         return null;
+    }
+
+    /** Add a movie if its ID is not already in use. */
+    public boolean addMovie(Movie movie) {
+        if (movie == null || findById(movie.getId()) != null) return false;
+        movies.add(movie);
+        return true;
+    }
+
+    /** Replace a movie's details while keeping its ID unchanged. */
+    public boolean updateMovie(String id, Movie updatedMovie) {
+        if (id == null || updatedMovie == null || !id.equals(updatedMovie.getId())) return false;
+        for (int i = 0; i < movies.size(); i++) {
+            if (movies.get(i).getId().equals(id)) {
+                movies.set(i, updatedMovie);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Remove a movie by ID. */
+    public boolean deleteMovie(String id) {
+        if (id == null) return false;
+        return movies.removeIf(movie -> movie.getId().equals(id));
     }
 
     /**
@@ -108,7 +132,8 @@ public class MovieManager {
                         m = new RomanceMovie(id, title, director, duration, price, showtime, extra, tickets);
                         break;
 
-                    case "SciFi":   // FIXED: matches SciFiMovie.toFileString()
+                    case "Science Fiction":
+                    case "SciFi":
                         m = new SciFiMovie(id, title, director, duration, price, showtime, extra, tickets);
                         break;
                 }
