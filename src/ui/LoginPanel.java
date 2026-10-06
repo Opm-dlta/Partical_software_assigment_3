@@ -14,7 +14,7 @@ import staff.Staff;
 
 public class LoginPanel extends JPanel {
 
-    // 记录当前是否选择了 Manager 登录
+    // 记录当前是否选择了 Manager 登录. Recording if choose manager login
     private boolean managerLogin = false;
     private Image backgroundImage;
 
@@ -28,30 +28,45 @@ public class LoginPanel extends JPanel {
         URL imageUrl = getClass().getResource("/images/login-background.jpg");  //background image
 
         if (imageUrl != null) {
-            backgroundImage = new ImageIcon(imageUrl).getImage();
+            backgroundImage = new ImageIcon(imageUrl).getImage(); // check null or not
         }
 
         JLabel title = new JLabel("Cinema Staff Login", JLabel.CENTER);     //JLabel-display word, Center
-        title.setFont(new Font("Arial", Font.BOLD, 26));        //word font
+        title.setFont(new Font("Serif", Font.BOLD, 32));
+        title.setForeground(new Color(245, 196, 90));       //word font
         add(title, BorderLayout.NORTH);     //title on the top
 
         JPanel formPanel = new JPanel(new GridLayout(2, 2, 8, 8));     // formPanel is a broad for input
         JTextField usernameField = new JTextField(18);
         JPasswordField passwordField = new JPasswordField(18);  //JPasswordField can hide password
 
-        formPanel.add(new JLabel("Username:"));
+        // userName style
+        JLabel usernameLabel = new JLabel("Username:");
+        usernameLabel.setForeground(Color.white);
+        formPanel.add(usernameLabel);
+        // userName background
         formPanel.add(usernameField);
-        formPanel.add(new JLabel("Password:"));
+        usernameField.setBackground(Color.white);
+        usernameField.setForeground(new Color(35, 31, 27));
+
+        // pw style
+        JLabel passwordLabel = new JLabel("Password:");
+        passwordLabel.setForeground(Color.WHITE);
+        formPanel.add(passwordLabel);
+        // pw bg
         formPanel.add(passwordField);
+        passwordField.setBackground(Color.white);
+        passwordField.setForeground(new Color(35, 31, 27));
 
         // 显示当前选择的登录角色 display current login role
         JLabel loginModeLabel = new JLabel("Seller Login", JLabel.CENTER);
+
 
         // 点击后会切换角色；切换行为下一步再添加 switch the role
         JButton switchRoleButton = new JButton("Switch to Manager Login");
 
         switchRoleButton.addActionListener(event -> {
-            // 每点击一次，就把当前模式反过来 click then switch
+            // 每点击一次，就把当前模式反过来 click then switch just a text, no function
             managerLogin = !managerLogin;
 
             if (managerLogin) {
@@ -88,7 +103,7 @@ public class LoginPanel extends JPanel {
         loginButton.addActionListener(event -> {
             String username = usernameField.getText().trim();  //get account, trim()--remove 2 useless space from input
             String password = new String(passwordField.getPassword());  //get password, switch to 'string'
-
+            String selectedRole = managerLogin ? "Manager" : "Seller";  // 'selectedRole' check "Manager" or "Seller"
             Staff staff = staffManager.login(username, password);  //check, T return staff, F return null
 
             if (staff == null) {
@@ -99,6 +114,7 @@ public class LoginPanel extends JPanel {
         });
     }
 
+//    background image
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);

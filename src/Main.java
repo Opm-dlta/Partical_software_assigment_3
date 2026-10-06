@@ -9,7 +9,7 @@ import ui.LoginPanel;
 public class Main {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            // 窗口和登录面板放在这里
+            // 窗口和登录面板放在这里 login here！！
             MovieManager movieManager = new MovieManager();
             StaffManager staffManager = new StaffManager(movieManager);
 
