@@ -45,8 +45,16 @@ public class StaffManager {
      */
     //login info of mangers and seller
     private void loadDefaultStaff() {
-        staffList.add(new TicketSeller("seller", "123", movieManager));
-        staffList.add(new Manager("manager", "1234", movieManager));
+        // fix by Johnson  7/Oct
+        // fix the password & account to professor request version
+        // that ur original code, no problem u can delete it
+        // staffList.add(new TicketSeller("seller", "123", movieManager));
+        // staffList.add(new Manager("manager", "1234", movieManager));
+        staffList.add(new TicketSeller("s1", "s1", movieManager));
+        staffList.add(new TicketSeller("s2", "s2", movieManager));
+        staffList.add(new TicketSeller("s3", "s3", movieManager));
+        staffList.add(new Manager("m1", "m1", movieManager));
+        staffList.add(new Manager("m2", "m2", movieManager));
     }
 
     /**

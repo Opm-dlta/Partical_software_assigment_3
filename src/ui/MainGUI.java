@@ -1,48 +1,28 @@
 package ui;
 
 import javax.swing.*;
+import java.awt.BorderLayout;
+import manager.MovieManager;
+import staff.Manager;
 import staff.Staff;
 import staff.TicketSeller;
-import staff.Manager;
-import manager.MovieManager;
 
-/**
- * ============================================================
- * MainGUI
- * ------------------------------------------------------------
- * PURPOSE:
- *   Main application screen after login.
- *   Shows different tabs depending on staff role.
- *
- * PACKAGE:
- *   src/main/java/ui/
- *
- * TABS:
- *   - Seller → BrowsePanel
- *   - Manager → ManagePanel
- *
- * DEPENDENCIES:
- *   - Staff (role detection)
- *   - MovieManager (passed to panels)
- * ============================================================
- */
+/** Main application tabs selected for the logged-in staff role. */
 public class MainGUI extends JPanel {
 
     public MainGUI(Staff staff, MovieManager movieManager) {
-
         JTabbedPane tabs = new JTabbedPane();
 
-        // Seller gets BrowsePanel
         if (staff instanceof TicketSeller) {
-            tabs.add("Browse", new BrowsePanel((TicketSeller) staff));
+            tabs.addTab("Browse", new BrowsePanel((TicketSeller) staff));
+        } else if (staff instanceof Manager) {
+            Manager manager = (Manager) staff;
+            // Managers can perform seller tasks as well as manage movie records.
+            tabs.addTab("Browse", new BrowsePanel(manager));
+            tabs.addTab("Manage", new ManagePanel(manager));
         }
 
-        // Manager gets ManagePanel
-        if (staff instanceof Manager) {
-            tabs.add("Manage", new ManagePanel((Manager) staff));
-        }
-
-        setLayout(new java.awt.BorderLayout());
-        add(tabs, java.awt.BorderLayout.CENTER);
+        setLayout(new BorderLayout());
+        add(tabs, BorderLayout.CENTER);
     }
 }

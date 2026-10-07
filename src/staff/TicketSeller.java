@@ -64,11 +64,11 @@ import movie.Movie;
  *   - MovieManager (backend movie operations)
  *
  * NOTES:
- *   - After selling a ticket, saveMovies() is called so the
- *     updated ticket count persists in movies.txt.
+ *   - Ticket sales update the shared in-memory movie list.
+ *   - Export the current data separately when required.
  * ============================================================
  */
-public class TicketSeller extends Staff {
+public class TicketSeller extends Staff implements MovieBrowser {
 
     private MovieManager movieManager;
 
@@ -93,6 +93,7 @@ public class TicketSeller extends Staff {
      * View all movies.
      * Used by BrowsePanel to populate the movie table.
      */
+    @Override
     public Movie[] viewAllMovies() {
         return movieManager.getAllMovies();
     }
@@ -101,9 +102,17 @@ public class TicketSeller extends Staff {
      * Search movies by keyword (case-insensitive).
      */
     public Movie[] searchMovies(String keyword) {
-        return java.util.Arrays.stream(movieManager.getAllMovies())
-                .filter(m -> m.getTitle().toLowerCase().contains(keyword.toLowerCase()))
-                .toArray(Movie[]::new);
+        return searchMovies("", keyword);
+    }
+
+    @Override
+    public Movie[] searchMovies(String category, String title) {
+        return movieManager.searchMovies(category, title);
+    }
+
+    @Override
+    public Movie findById(String movieId) {
+        return movieManager.findById(movieId);
     }
 
     /**
@@ -112,7 +121,7 @@ public class TicketSeller extends Staff {
      * PROCESS:
      *   1. Find movie by ID
      *   2. Attempt to sell ticket
-     *   3. If successful → saveMovies()
+     *   3. Return whether the sale succeeded.
      */
     public boolean sellTicket(String movieId) {
 
@@ -122,11 +131,6 @@ public class TicketSeller extends Staff {
 
         // Step 2: Attempt sale
         boolean sold = movie.sellTicket();
-
-        // Step 3: Persist change
-        if (sold) {
-            movieManager.saveMovies();
-        }
 
         return sold;
     }

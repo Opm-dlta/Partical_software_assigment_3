@@ -53,15 +53,51 @@ public class MovieManager {
      * @return Movie or null if not found.
      */
     public Movie findById(String id) {
+        if (id == null) return null;
         for (Movie m : movies) {
             if (m.getId().equals(id)) return m;
         }
         return null;
     }
 
+    /** Search by category and partial title. Empty values match any value. */
+    public Movie[] searchMovies(String category, String title) {
+        String categoryQuery = normalizeCategory(category);
+        String titleQuery = title == null ? "" : title.trim().toLowerCase();
+        List<Movie> matches = new ArrayList<>();
+
+        for (Movie movie : movies) {
+            boolean categoryMatches = categoryQuery.isEmpty()
+                    || categoryOf(movie).equalsIgnoreCase(categoryQuery);
+            boolean titleMatches = movie.getTitle().toLowerCase().contains(titleQuery);
+            if (categoryMatches && titleMatches) matches.add(movie);
+        }
+
+        return matches.toArray(new Movie[0]);
+    }
+
+    private String normalizeCategory(String category) {
+        if (category == null) return "";
+        String value = category.trim();
+        if (value.equalsIgnoreCase("All")) return "";
+        if (value.equalsIgnoreCase("SciFi") || value.equalsIgnoreCase("Science Fiction")) {
+            return "Science Fiction";
+        }
+        return value;
+    }
+
+    private String categoryOf(Movie movie) {
+        if (movie instanceof ActionMovie) return "Action";
+        if (movie instanceof ComedyMovie) return "Comedy";
+        if (movie instanceof RomanceMovie) return "Romance";
+        if (movie instanceof SciFiMovie) return "Science Fiction";
+        return "";
+    }
+
     /** Add a movie if its ID is not already in use. */
     public boolean addMovie(Movie movie) {
-        if (movie == null || findById(movie.getId()) != null) return false;
+        if (movie == null || movie.getId() == null || movie.getId().trim().isEmpty()
+                || findById(movie.getId()) != null) return false;
         movies.add(movie);
         return true;
     }
@@ -76,6 +112,11 @@ public class MovieManager {
             }
         }
         return false;
+    }
+
+    /** Update by the movie's own ID; preserves the existing ID. */
+    public boolean updateMovie(Movie updatedMovie) {
+        return updatedMovie != null && updateMovie(updatedMovie.getId(), updatedMovie);
     }
 
     /** Remove a movie by ID. */
@@ -147,18 +188,27 @@ public class MovieManager {
     }
 
     /**
-     * Save movies back to movies.txt.
-     * Called after selling tickets or manager updates.
+     * Save to the configured project data file. The assignment's Export action
+     * should use exportMovies(File) to write to a user-selected new file.
      */
     public void saveMovies() {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH))) {
-
-            for (Movie m : movies) {
-                pw.println(m.toFileString());
-            }
-
+        try {
+            writeMovies(new File(FILE_PATH));
         } catch (Exception e) {
             System.out.println("Error saving movies: " + e.getMessage());
+        }
+    }
+
+    /** Export the current movie list to a user-selected file. */
+    public void exportMovies(File destination) throws IOException {
+        if (destination == null) throw new IllegalArgumentException("Export destination is required.");
+        writeMovies(destination);
+    }
+
+    private void writeMovies(File destination) throws IOException {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(destination))) {
+            for (Movie movie : movies) pw.println(movie.toFileString());
+            if (pw.checkError()) throw new IOException("Could not write movie data.");
         }
     }
 }

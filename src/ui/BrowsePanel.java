@@ -1,102 +1,115 @@
 package ui;
-// put all ui and background here
-import javax.swing.*;
-import java.awt.*;
-import staff.TicketSeller;
-import movie.Movie;
 
-/**
- * ============================================================
- * BrowsePanel
- * ------------------------------------------------------------
- * PURPOSE:
- *   Seller's movie browsing + ticket selling interface.
- *
- * PACKAGE:
- *   src/main/java/ui/
- *
- * FEATURES:
- *   - Search movies
- *   - View all movies
- *   - Sell tickets
- *
- * DEPENDENCIES:
- *   - TicketSeller (backend operations)
- * ============================================================
- */
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import movie.Movie;
+import staff.MovieBrowser;
+
+/** Shared movie browsing and ticket-sale screen for sellers and managers. */
 public class BrowsePanel extends JPanel {
 
-    private TicketSeller seller;
-    private JTable table;
-    private JTextField searchField;
+    private final MovieBrowser browser;
+    private final JTable table = new JTable();
+    private final JComboBox<String> categoryBox = new JComboBox<>(new String[]{
+            "All", "Action", "Comedy", "Romance", "Science Fiction"
+    });
+    private final JTextField titleField = new JTextField(18);
 
-    public BrowsePanel(TicketSeller seller) {
-        this.seller = seller;
+    public BrowsePanel(MovieBrowser browser) {
+        this.browser = browser;
+        setLayout(new BorderLayout(8, 8));
 
-        setLayout(new BorderLayout());
-
-        // ===== Top search bar =====
-        JPanel top = new JPanel();
-        searchField = new JTextField(20);
+        JPanel searchPanel = new JPanel();
         JButton searchButton = new JButton("Search");
-        top.add(new JLabel("Search:"));
-        top.add(searchField);
-        top.add(searchButton);
-        add(top, BorderLayout.NORTH);
+        JButton showAllButton = new JButton("Show All");
+        searchPanel.add(new JLabel("Category:"));
+        searchPanel.add(categoryBox);
+        searchPanel.add(new JLabel("Title:"));
+        searchPanel.add(titleField);
+        searchPanel.add(searchButton);
+        searchPanel.add(showAllButton);
+        add(searchPanel, BorderLayout.NORTH);
 
-        // ===== Movie table =====
-        table = new JTable();
-        refreshTable(seller.viewAllMovies());
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        refreshTable(browser.viewAllMovies());
         add(new JScrollPane(table), BorderLayout.CENTER);
 
-        // ===== Sell button =====
+        JPanel actionPanel = new JPanel();
+        JButton detailsButton = new JButton("View Details");
         JButton sellButton = new JButton("Sell Ticket");
-        add(sellButton, BorderLayout.SOUTH);
+        actionPanel.add(detailsButton);
+        actionPanel.add(sellButton);
+        add(actionPanel, BorderLayout.SOUTH);
 
-        // ===== Event handlers =====
-        searchButton.addActionListener(e -> {
-            String keyword = searchField.getText();
-            refreshTable(seller.searchMovies(keyword));
+        searchButton.addActionListener(e -> applySearch());
+        showAllButton.addActionListener(e -> {
+            categoryBox.setSelectedItem("All");
+            titleField.setText("");
+            refreshTable(browser.viewAllMovies());
         });
-
-        sellButton.addActionListener(e -> handleSell());
+        detailsButton.addActionListener(e -> showSelectedDetails());
+        sellButton.addActionListener(e -> sellSelectedTicket());
+        table.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override public void mouseClicked(java.awt.event.MouseEvent e) {
+                if (e.getClickCount() == 2) showSelectedDetails();
+            }
+        });
     }
 
-    /**
-     * Refresh table with given movie list.
-     */
+    private void applySearch() {
+        String category = (String) categoryBox.getSelectedItem();
+        if ("All".equals(category)) category = "";
+        refreshTable(browser.searchMovies(category, titleField.getText()));
+    }
+
     private void refreshTable(Movie[] movies) {
-        String[] columns = {"ID", "Title", "Director", "Showtime", "Tickets"};
-        String[][] data = new String[movies.length][5];
-
-        for (int i = 0; i < movies.length; i++) {
-            data[i][0] = movies[i].getId();
-            data[i][1] = movies[i].getTitle();
-            data[i][2] = movies[i].getDirector();
-            data[i][3] = movies[i].getShowtime();
-            data[i][4] = String.valueOf(movies[i].getAvailableTickets());
+        String[] columns = {"ID", "Title", "Director", "Duration", "Price", "Showtime", "Extra", "Tickets"};
+        DefaultTableModel model = new DefaultTableModel(columns, 0) {
+            @Override public boolean isCellEditable(int row, int column) { return false; }
+        };
+        for (Movie movie : movies) {
+            model.addRow(new Object[]{movie.getId(), movie.getTitle(), movie.getDirector(),
+                    movie.getDuration(), movie.getPrice(), movie.getShowtime(),
+                    movie.getExtraAttribute(), movie.getAvailableTickets()});
         }
-
-        table.setModel(new javax.swing.table.DefaultTableModel(data, columns));
+        table.setModel(model);
     }
 
-    /**
-     * Sell ticket for selected movie.
-     */
-    private void handleSell() {
+    private String selectedMovieId() {
         int row = table.getSelectedRow();
-        if (row == -1) {
-            JOptionPane.showMessageDialog(this, "Select a movie first");
+        return row < 0 ? null : (String) table.getValueAt(row, 0);
+    }
+
+    private void showSelectedDetails() {
+        String id = selectedMovieId();
+        if (id == null) {
+            JOptionPane.showMessageDialog(this, "Select a movie first.");
             return;
         }
+        Movie movie = browser.findById(id);
+        String details = "ID: " + movie.getId()
+                + "\nTitle: " + movie.getTitle()
+                + "\nDirector: " + movie.getDirector()
+                + "\nDuration: " + movie.getDuration() + " minutes"
+                + "\nPrice: $" + movie.getPrice()
+                + "\nShowtime: " + movie.getShowtime()
+                + "\nCategory detail: " + movie.getExtraAttribute()
+                + "\nAvailable tickets: " + movie.getAvailableTickets();
+        JOptionPane.showMessageDialog(this, details, "Movie Details", JOptionPane.INFORMATION_MESSAGE);
+    }
 
-        String movieId = (String) table.getValueAt(row, 0);
-
-        if (seller.sellTicket(movieId)) {
-            JOptionPane.showMessageDialog(this, "Ticket sold!");
-            refreshTable(seller.viewAllMovies());
+    private void sellSelectedTicket() {
+        String id = selectedMovieId();
+        if (id == null) {
+            JOptionPane.showMessageDialog(this, "Select a movie first.");
+            return;
+        }
+        if (browser.sellTicket(id)) {
+            JOptionPane.showMessageDialog(this, "Ticket sold.");
+            applySearch();
         } else {
-            JOptionPane.showMessageDialog(this, "Cannot sell ticket");
+            JOptionPane.showMessageDialog(this, "Ticket sale failed. No tickets may remain.");
         }
     }
 }
