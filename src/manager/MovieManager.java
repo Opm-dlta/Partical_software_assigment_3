@@ -174,6 +174,8 @@ public class MovieManager {
                         break;
 
                     case "Science Fiction":
+//                  By Johnson, txt is ScienceFiction. Oct 7
+                    case "ScienceFiction":
                     case "SciFi":
                         m = new SciFiMovie(id, title, director, duration, price, showtime, extra, tickets);
                         break;

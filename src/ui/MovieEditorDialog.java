@@ -29,6 +29,7 @@ final class MovieEditorDialog {
 
         JTextField tickets = new JTextField(existing == null ? "50" : String.valueOf(existing.getAvailableTickets()));
 
+
         // basic on the movie kind to add extra attribute option.
         // 根据当前类别填入额外属性选项
         updateExtraOptions(category, extra);
@@ -39,6 +40,11 @@ final class MovieEditorDialog {
             category.setSelectedItem(categoryOf(existing));
             id.setEditable(false);
         }
+        // 编辑已有电影时，恢复它原来的额外属性
+        if (existing != null) {
+            extra.setSelectedItem(existing.getExtraAttribute());
+        }
+
         // when change kind, renew extra attribute option.
         // 更改类别时，重新更新额外属性选项
         category.addActionListener(event -> updateExtraOptions(category, extra));
